@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        <div class="card card-body shadow-sm">
+            <h5>Input KRS Mahasiswa</h5>
+            <hr>
+            <form action="/krs/tambah" method="POST">
+                <div class="mb-3">
+                    <label>Pilih Mahasiswa</label>
+                    <select name="nim_mahasiswa" class="form-select" required>
+                        <option value="">-- Pilih Mahasiswa --</option>
+                        {% for mhs in data_mahasiswa %}
+                        <option value="{{ mhs.nim }}">{{ mhs.nim }} - {{ mhs.nama }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label>Pilih Matakuliah</label>
+                    <select name="kode_matakuliah" class="form-select" required>
+                        <option value="">-- Pilih Matakuliah --</option>
+                        {% for mk in data_matakuliah %}
+                        <option value="{{ mk.kode_mk }}">{{ mk.kode_mk }} - {{ mk.nama_mk }} ({{ mk.sks }} SKS)</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-warning w-100">Simpan KRS</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        <div class="card card-body shadow-sm">
+            <h5>Daftar Kartu Rencana Studi (KRS)</h5>
+            <hr>
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>NIM</th>
+                        <th>Nama Mahasiswa</th>
+                        <th>Matakuliah</th>
+                        <th>SKS</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for krs in data_krs %}
+                    <tr>
+                        <td>{{ krs.nim_mahasiswa }}</td>
+                        <td>{{ krs.mahasiswa.nama }}</td>
+                        <td>{{ krs.matakuliah.nama_mk }}</td>
+                        <td>{{ krs.matakuliah.sks }}</td>
+                        <td>
+                            <a href="/krs/hapus/{{ krs.id }}" class="btn btn-danger btn-sm" onclick="return confirm('Batalkan KRS ini?')">Hapus</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

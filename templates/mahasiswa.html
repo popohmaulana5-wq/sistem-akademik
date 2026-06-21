@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="alert alert-{{ category }} alert-dismissible fade show shadow-sm" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card card-body shadow-sm">
+            <h5>Tambah Mahasiswa</h5>
+            <hr>
+           <form action="/mahasiswa/tambah" method="POST" enctype="multipart/form-data">
+    <div class="mb-3">
+        <label>NIM</label>
+        <input type="text" name="nim" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label>Nama Lengkap</label>
+        <input type="text" name="nama" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label>Jurusan</label>
+        <input type="text" name="jurusan" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label>Upload Foto Mahasiswa</label>
+        <input type="file" name="foto" class="form-control" accept="image/*">
+    </div>
+    <button type="submit" class="btn btn-primary w-100">Simpan Data</button>
+</form>
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        <div class="card card-body shadow-sm">
+            <h5>Daftar Mahasiswa</h5>
+            <hr>
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>NIM</th>
+                        <th>Nama</th>
+                        <th>Jurusan</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for mhs in data_mahasiswa %}
+                    <tr>
+                        <td>{{ mhs.nim }}</td>
+                        <td>{{ mhs.nama }}</td>
+                        <td>{{ mhs.jurusan }}</td>
+                        <td>
+                            <a href="/mahasiswa/cetak/{{ mhs.nim }}" target="_blank" class="btn btn-info btn-sm text-white">Cetak KTM</a>
+                            <a href="/mahasiswa/edit/{{ mhs.nim }}" class="btn btn-warning btn-sm">Edit</a>
+                            <a href="/mahasiswa/hapus/{{ mhs.nim }}" class="btn btn-danger btn-sm" onclick="return confirm('Yakin mau hapus?')">Hapus</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

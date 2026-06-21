@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KTM - {{ mhs.nama }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .ktm-card {
+            width: 450px;
+            height: 270px;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 20px;
+            position: relative;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            margin: 50px auto;
+        }
+        .ktm-header h5 {
+            margin: 0;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+        .ktm-header p {
+            font-size: 11px;
+            opacity: 0.8;
+            margin: 0;
+        }
+        .ktm-body {
+            margin-top: 25px;
+        }
+        .foto-placeholder {
+            width: 90px;
+            height: 120px;
+            background-color: #e9ecef;
+            color: #6c757d;
+            border: 2px solid white;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            text-align: center;
+            overflow: hidden; /* Biar gambar yang kegedean ga keluar dari kotak */
+        }
+        .foto-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Biar foto otomatis menyesuaikan kotak tanpa gepeng */
+        }
+        .mhs-info table {
+            color: white;
+            font-size: 14px;
+        }
+        .mhs-info table td {
+            padding: 3px 0;
+        }
+        /* Style pas dicetak (Sembunyikan tombol print) */
+        @media print {
+            .no-print {
+                display: none;
+            }
+            body {
+                background-color: white;
+            }
+            .ktm-card {
+                box-shadow: none;
+                margin: 0 auto;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="text-center mt-4 no-print">
+        <button onclick="window.print()" class="btn btn-success me-2">Print Kartu</button>
+        <button onclick="window.close()" class="btn btn-secondary">Tutup Halaman</button>
+    </div>
+
+    <div class="ktm-card">
+        <div class="ktm-header d-flex justify-content-between align-items-center border-bottom pb-2">
+            <div>
+                <h5>UNIVERSITAS BUDILUHUR</h5>
+                <p>Kartu Tanda Mahasiswa (KTM)</p>
+            </div>
+            <span class="badge bg-light text-primary fw-bold">S1</span>
+        </div>
+        
+        <div class="ktm-body d-flex gap-3">
+            <div class="foto-placeholder">
+    {% if mhs.foto %}
+        <img src="{{ url_for('static', filename='uploads/' + mhs.foto) }}" alt="Foto {{ mhs.nama }}">
+    {% else %}
+        Foto<br>3x4
+    {% endif %}
+</div>
+            
+            <div class="mhs-info flex-grow-1">
+                <table class="w-100">
+                    <tr>
+                        <td style="width: 30%;">NIM</td>
+                        <td style="width: 5%;">:</td>
+                        <td class="fw-bold">{{ mhs.nim }}</td>
+                    </tr>
+                    <tr>
+                        <td>Nama</td>
+                        <td>:</td>
+                        <td class="fw-bold text-uppercase">{{ mhs.nama }}</td>
+                    </tr>
+                    <tr>
+                        <td>Jurusan</td>
+                        <td>:</td>
+                        <td class="fw-bold text-uppercase">{{ mhs.jurusan }}</td>
+                    </tr>
+                    <tr>
+                        <td>Status</td>
+                        <td>:</td>
+                        <td><span class="text-warningfw-bold">AKTIF</span></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        window.onload = function() {
+            setTimeout(function() {
+                window.print();
+            }, 500); // delay dikit biar render layout selesai
+        }
+    </script>
+</body>
+</html>

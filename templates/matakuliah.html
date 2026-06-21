@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="alert alert-{{ category }} alert-dismissible fade show shadow-sm" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card card-body shadow-sm">
+            <h5>Tambah Matakuliah</h5>
+            <hr>
+            <form action="/matakuliah/tambah" method="POST">
+                <div class="mb-3">
+                    <label>Kode MK</label>
+                    <input type="text" name="kode_mk" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label>Nama Matakuliah</label>
+                    <input type="text" name="nama_mk" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label>SKS</label>
+                    <input type="number" name="sks" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Simpan Data</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        <div class="card card-body shadow-sm">
+            <h5>Daftar Matakuliah</h5>
+            <hr>
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Kode MK</th>
+                        <th>Nama Matakuliah</th>
+                        <th>SKS</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for mk in data_matakuliah %}
+                    <tr>
+                        <td>{{ mk.kode_mk }}</td>
+                        <td>{{ mk.nama_mk }}</td>
+                        <td>{{ mk.sks }} Detik</td>
+                        <td>
+                            <a href="/matakuliah/edit/{{ mk.kode_mk }}" class="btn btn-warning btn-sm">Edit</a>
+                            <a href="/matakuliah/hapus/{{ mk.kode_mk }}" class="btn btn-danger btn-sm" onclick="return confirm('Yakin mau hapus?')">Hapus</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
